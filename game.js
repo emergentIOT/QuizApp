@@ -71,7 +71,6 @@ getNewQuestion = () => {
     //set the choices 
     choices.forEach( choice => {
         const number = choice.dataset['number'];
-        console.log("number is " +  number);
         //set the choices based on the number from currentQuestion
         choice.innerText = currentQuestion['choice' + number];
     });
@@ -86,18 +85,43 @@ getNewQuestion = () => {
 //OnClick of a new choice 
 choices.forEach(choice => {
     choice.addEventListener("click", e => {
-        console.log(e.target);
+
         if(!accetingAnswer){
             return;
         }
 
         accetingAnswer = false;
-        const seleectedChoice = e.target;
-        const selectedAnswer = seleectedChoice.dataset["number"];
-        console.log(selectedAnswer);
+        //The content written in each choice
+        const selectedChoice = e.target;
+        const selectedAnswer = selectedChoice.dataset["number"];
+       
+        classsToApply = selectedAnswer == currentQuestion.answer ? 'correct' : 'incorrect';
+        
+        /*const classsToApply = 'incorrect';
+        //If you select the right answer.
+        if(selectedAnswer == currentQuestion.answer){
+            classsToApply = 'correct';
+        }
+
+        /*
+        --> Another way of doing above operation 
+        classsToApply = selectedAnswer == currentQuestion.answer ? 'correct' : 'incorrect';
+        */
+
+        /*
+         get the whole container of each choice and set a parameter
+         of CORRECT & INCORRECT
+         */
+        selectedChoice.parentElement.classList.add(classsToApply);
+
+        setTimeout(() => {
+            selectedChoice.parentElement.classList.remove(classsToApply);
+            getNewQuestion();
+        }, 1000);
+        
 
         //Once aa choice has been selected select a new question.
-        getNewQuestion();
+      //  getNewQuestion();
     });
 });
 
